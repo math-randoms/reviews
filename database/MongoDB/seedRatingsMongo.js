@@ -1,42 +1,27 @@
-const mongoose = require('mongoose');
 const db = require('./index.js');
 const Model = require('./models.js');
 const fs = require('fs');
+const path = require('path');
 const ndjson = require('ndjson');
 const through2 = require('through2');
-const chalk = require('chalk');
 
-const inputStream = fs.createReadStream(__dirname + '/ratings.ndjson', {
-  highWaterMark: 1 * 1024
-});
+let startTime = new Date();
 
-const doStream = inputStream.pipe(
-  through2(
-    {
-      highWaterMark: 1 * 1024
-    },
-    function handleWrite(chunk, encoding, done) {
-      console.log(
-        chalk.bgMagenta.white.bold(
-          'Pulling data from file:',
-          chunk.length,
-          'bytes'
-        )
-      );
-      this.push(chunk, encoding);
-      done();
-    }
-  )
+const inputStream = fs.createReadStream(
+  path.resolve(__dirname + '/../ratings.ndjson'),
+  {
+    highWaterMark: 1 * 1024
+  }
 );
 
-const transformStream = doStream.pipe(
+const transformStream = inputStream.pipe(
   ndjson.parse({
     highWaterMark: 10
   })
 );
 
 const batchingStream = (function batchObjects(source) {
-  let batchSize = 10;
+  let batchSize = 5;
   let batchBuffer = [];
   let batchingStream = source.pipe(
     through2.obj(
@@ -68,8 +53,6 @@ const databaseStream = batchingStream.pipe(
       highWaterMark: 10
     },
     function handleWrite(batch, encoding, done) {
-      console.log(chalk.gray('Batch being processed:', pluckIds(batch)));
-
       const promises = batch.map(function operator(item) {
         return writeToMongo(item);
       });
@@ -85,17 +68,13 @@ const databaseStream = batchingStream.pipe(
   )
 );
 
-databaseStream.on('data', function(results) {
-  console.log(chalk.dim.italic('Batch completed.'));
+databaseStream.on('data', function(results) {});
+
+databaseStream.on('end', function(results) {
+  let endTime = new Date();
+  console.log(`Total Elapsed Time: ${(endTime - startTime) / 1000} seconds`);
+  db.close();
 });
-
-function pluckIds(batch) {
-  var ids = batch.map(function operator(item) {
-    return item.id;
-  });
-
-  return ids;
-}
 
 function writeToMongo(data) {
   return Model.Rating.create(data);

@@ -1,8 +1,11 @@
 node_modules
 package-lock.json
 public/bundle.js
-ratings.ndjson
-reviews.ndjson
+database/ratings.ndjson
+database/reviews.ndjson
+database/ratings.csv
+database/reviews.csv
+
 
 ## MAC files ##
 .DS_Store

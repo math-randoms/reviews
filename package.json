@@ -7,8 +7,11 @@
     "build": "webpack -d --watch",
     "start": "nodemon server/server.js && node database/reviewGenerator.js",
     "generate": "node database/reviewGenerator.js",
-    "seedRatings": "node database/seedRatingsMongo.js",
-    "seedReviews": "node database/seedReviewsMongo.js",
+    "seedRatingsMongo": "node database/MongoDB/seedRatingsMongo.js",
+    "seedReviewsMongo": "node database/MongoDB/seedReviewsMongo.js",
+    "buildPGSchema": "node database/PostgreSQL/models.js",
+    "seedRatingsPG": "node database/PostgreSQL/seedRatingsPG.js",
+    "seedReviewsPG": "node database/PostgreSQL/seedReviewsPG.js",
     "server-dev": "nodemon server/server.js",
     "test": "mocha test"
   },
@@ -42,9 +45,11 @@
     "mongoose": "^5.4.20",
     "morgan": "^1.9.1",
     "nodemon": "^1.18.10",
+    "pg": "^7.10.0",
     "react": "^16.8.5",
     "react-dom": "^16.8.5",
     "react-paginate": "^6.3.0",
+    "sequelize": "^5.7.0",
     "style-loader": "^0.23.1"
   }
 }
