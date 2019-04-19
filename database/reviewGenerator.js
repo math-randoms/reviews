@@ -147,7 +147,7 @@ when you don't want to do anything but be in the ${
 This was the absolute ${
       adjectives[Math.floor(Math.random() * adjectives.length)]
     } ${place[Math.floor(Math.random() * place.length)]} \
-for what we were wanting. Obviously the view is enough to stand on its own, but we also ${
+for what we were wanting. Obviously the view is enough to stand on its own but we also ${
       verbs[Math.floor(Math.random() * verbs.length)]
     } \
 the little things like the ${area[Math.floor(Math.random() * area.length)]} \
@@ -181,7 +181,7 @@ ${endingBlurb[Math.floor(Math.random() * endingBlurb.length)]}`;
 // Obviously the view is enough to stand on its own, but we also loved the little things like picking of fresh fruit from the trees
 // and just the overall feel of the property. We cannot wait to go back!`
 
-// for (let i = 0; i < 10000; i++) {
+// for (let i = 0; i < 100000; i++) {
 //   let ratingObj = {
 //     accuracy: Math.random() * 6,
 //     communication: Math.random() * 6,
@@ -223,7 +223,7 @@ ${endingBlurb[Math.floor(Math.random() * endingBlurb.length)]}`;
 //       `accuracy, communication, cleanliness, location, checkIn, value, average\n`
 //     );
 //     ratings.write(writeValue + '\n');
-//   } else if (i === 9999) {
+//   } else if (i === 99999) {
 //     ratings.write(writeValue);
 //   } else {
 //     ratings.write(writeValue + '\n');
@@ -248,7 +248,7 @@ ${endingBlurb[Math.floor(Math.random() * endingBlurb.length)]}`;
     if (i === 0) {
       reviews.write('user, date, text, userImage\n');
       reviews.write(writeValue + '\n');
-    } else if (i === 9999999) {
+    } else if (i === 10000000) {
       reviews.write(writeValue);
     } else {
       if (!reviews.write(writeValue + '\n')) {
