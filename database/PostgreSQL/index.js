@@ -9,7 +9,7 @@ client
     console.log('PG connected');
     function asyncTableCreate() {
       client.query(
-        'create table Ratings (id serial primary key, accuracy float, communication float, cleanliness float, location float, checkIn float, value float, average float)',
+        'create table reviews (id serial primary key, propertyId int foreign key references properties(propertyId), "user" varchar(8), date varchar(15), text varchar(450), userImage varchar(121), accuracyRating float, communicationRating float, cleanlinessRating float, locationRating float, checkInRating float, valueRating float, averageRating float)',
         (err, res) => {
           if (err) throw err;
           client.end();
@@ -17,7 +17,7 @@ client
       );
     }
     client.query(
-      'create table Reviews (id serial primary key, "user" varchar(8), date varchar(15), text varchar(450), userImage varchar(121))',
+      'create table properties (propertyId serial primary key)',
       (err, res) => {
         if (err) throw err;
         asyncTableCreate();

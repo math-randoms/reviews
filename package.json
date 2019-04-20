@@ -6,7 +6,8 @@
   "scripts": {
     "build": "webpack -d --watch",
     "start": "nodemon server/server.js && node database/reviewGenerator.js",
-    "generate": "node database/reviewGenerator.js",
+    "generateProperties": "node database/propertyGenerator.js",
+    "generateReviews": "node database/reviewGenerator.js",
     "seedRatingsMongo": "node database/MongoDB/seedRatingsMongo.js",
     "seedReviewsMongo": "node database/MongoDB/seedReviewsMongo.js",
     "buildPGSchema": "node database/PostgreSQL/index.js",
