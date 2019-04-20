@@ -183,6 +183,7 @@ ${endingBlurb[Math.floor(Math.random() * endingBlurb.length)]}`;
 
 // for (let i = 0; i < 100000; i++) {
 //   let ratingObj = {
+//     id: i + 1,
 //     accuracy: Math.random() * 6,
 //     communication: Math.random() * 6,
 //     cleanliness: Math.random() * 6,
@@ -233,6 +234,7 @@ ${endingBlurb[Math.floor(Math.random() * endingBlurb.length)]}`;
 (async () => {
   for (let i = 0; i < 10000000; i++) {
     let reviewObj = {
+      id: i + 1,
       user: users[Math.floor(Math.random() * users.length)],
       date: `${months[Math.floor(Math.random() * months.length)]} ${
         years[Math.floor(Math.random() * years.length)]
