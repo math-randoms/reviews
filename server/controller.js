@@ -1,5 +1,4 @@
 const Model = require('../database/MongoDB/models.js');
-const mongoose = require('mongoose');
 
 module.exports = {
   getRating: (req, res) => {
