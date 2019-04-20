@@ -2,7 +2,7 @@ const Model = require('../database/MongoDB/models.js');
 
 module.exports = {
   getRating: (req, res) => {
-    Model.Rating.countDocuments()
+    Model.Rating.count()
       .then(count => {
         let random = Math.random() * count;
         return Model.Rating.findOne().skip(random);
@@ -15,7 +15,7 @@ module.exports = {
   postRating: (req, res) => {},
 
   getReviewCount: (req, res) => {
-    Model.Review.countDocuments().then(count => {
+    Model.Review.count().then(count => {
       res.status(200).send({ count });
     });
   },

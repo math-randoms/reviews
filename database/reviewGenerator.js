@@ -221,7 +221,7 @@ ${endingBlurb[Math.floor(Math.random() * endingBlurb.length)]}`;
 
 //   if (i === 0) {
 //     ratings.write(
-//       `accuracy, communication, cleanliness, location, checkIn, value, average\n`
+//       `id, accuracy, communication, cleanliness, location, checkIn, value, average\n`
 //     );
 //     ratings.write(writeValue + '\n');
 //   } else if (i === 99999) {
@@ -248,7 +248,7 @@ ${endingBlurb[Math.floor(Math.random() * endingBlurb.length)]}`;
     if (i % 1000000 === 0) console.log(i);
 
     if (i === 0) {
-      reviews.write('user, date, text, userImage\n');
+      reviews.write('id, user, date, text, userImage\n');
       reviews.write(writeValue + '\n');
     } else if (i === 10000000) {
       reviews.write(writeValue);
