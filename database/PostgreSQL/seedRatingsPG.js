@@ -1,29 +1,20 @@
-const mongoose = require('mongoose');
 const db = require('./index.js');
 const Model = require('./models.js');
 const fs = require('fs');
+const path = require('path');
 const ndjson = require('ndjson');
 const through2 = require('through2');
 
 let startTime = new Date();
 
-const inputStream = fs.createReadStream(__dirname + '/reviews.ndjson', {
-  highWaterMark: 1 * 1024
-});
-
-const doStream = inputStream.pipe(
-  through2(
-    {
-      highWaterMark: 1 * 1024
-    },
-    function handleWrite(chunk, encoding, done) {
-      this.push(chunk, encoding);
-      done();
-    }
-  )
+const inputStream = fs.createReadStream(
+  path.resolve(__dirname + '/../ratings.ndjson'),
+  {
+    highWaterMark: 1 * 1024
+  }
 );
 
-const transformStream = doStream.pipe(
+const transformStream = inputStream.pipe(
   ndjson.parse({
     highWaterMark: 10
   })
@@ -63,7 +54,7 @@ const databaseStream = batchingStream.pipe(
     },
     function handleWrite(batch, encoding, done) {
       const promises = batch.map(function operator(item) {
-        return writeToMongo(item);
+        return writeToPostgres(item);
       });
       Promise.all(promises).then(
         function handleResolve(results) {
@@ -82,8 +73,9 @@ databaseStream.on('data', function(results) {});
 databaseStream.on('end', function(results) {
   let endTime = new Date();
   console.log(`Total Elapsed Time: ${(endTime - startTime) / 1000} seconds`);
+  db.close();
 });
 
-function writeToMongo(data) {
-  return Model.Review.collection.insertOne(data);
+function writeToPostgres(data) {
+  return Model.Ratings.create(data);
 }

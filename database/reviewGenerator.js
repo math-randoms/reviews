@@ -1,7 +1,7 @@
 const fs = require('fs');
 
-// const ratings = fs.createWriteStream('./ratings.ndjson');
-const reviews = fs.createWriteStream('./reviews.ndjson');
+// const ratings = fs.createWriteStream('./ratings.csv');
+const reviews = fs.createWriteStream('./reviews.csv');
 
 const place = ['place', 'home', 'house', 'apartment', 'location', 'property'];
 const area = [
@@ -127,7 +127,6 @@ const years = [
 Good blend: 1/3 3-word reviews
             1/3 longer, under 270-280 character reviews
             1/3 over 270-280 character reviews
-
             ...or not. 70% long, 30% short?
 */
 
@@ -148,7 +147,7 @@ when you don't want to do anything but be in the ${
 This was the absolute ${
       adjectives[Math.floor(Math.random() * adjectives.length)]
     } ${place[Math.floor(Math.random() * place.length)]} \
-for what we were wanting. Obviously the view is enough to stand on its own, but we also ${
+for what we were wanting. Obviously the view is enough to stand on its own but we also ${
       verbs[Math.floor(Math.random() * verbs.length)]
     } \
 the little things like the ${area[Math.floor(Math.random() * area.length)]} \
@@ -182,8 +181,9 @@ ${endingBlurb[Math.floor(Math.random() * endingBlurb.length)]}`;
 // Obviously the view is enough to stand on its own, but we also loved the little things like picking of fresh fruit from the trees
 // and just the overall feel of the property. We cannot wait to go back!`
 
-// for (let i = 0; i < 10000; i++) {
+// for (let i = 0; i < 100000; i++) {
 //   let ratingObj = {
+//     id: i + 1,
 //     accuracy: Math.random() * 6,
 //     communication: Math.random() * 6,
 //     cleanliness: Math.random() * 6,
@@ -216,14 +216,25 @@ ${endingBlurb[Math.floor(Math.random() * endingBlurb.length)]}`;
 //   } else {
 //     ratingObj.average = averageRound;
 //   }
-//
-// ratings.write(JSON.stringify(ratingObj) + '\n');
-// fs.appendFile('./ratings.json', JSON.stringify(ratingObj) + '\n', () => null);
+
+//   let writeValue = Object.values(ratingObj).join(',');
+
+//   if (i === 0) {
+//     ratings.write(
+//       `accuracy, communication, cleanliness, location, checkIn, value, average\n`
+//     );
+//     ratings.write(writeValue + '\n');
+//   } else if (i === 99999) {
+//     ratings.write(writeValue);
+//   } else {
+//     ratings.write(writeValue + '\n');
+//   }
 // }
 
 (async () => {
   for (let i = 0; i < 10000000; i++) {
     let reviewObj = {
+      id: i + 1,
       user: users[Math.floor(Math.random() * users.length)],
       date: `${months[Math.floor(Math.random() * months.length)]} ${
         years[Math.floor(Math.random() * years.length)]
@@ -232,17 +243,19 @@ ${endingBlurb[Math.floor(Math.random() * endingBlurb.length)]}`;
       userImage: `${imageURls[Math.floor(Math.random() * imageURls.length)]}`
     };
 
+    let writeValue = Object.values(reviewObj).join(',');
+
     if (i % 1000000 === 0) console.log(i);
 
-    if (!reviews.write(JSON.stringify(reviewObj) + '\n')) {
-      await new Promise(resolve => reviews.once('drain', resolve));
+    if (i === 0) {
+      reviews.write('user, date, text, userImage\n');
+      reviews.write(writeValue + '\n');
+    } else if (i === 10000000) {
+      reviews.write(writeValue);
+    } else {
+      if (!reviews.write(writeValue + '\n')) {
+        await new Promise(resolve => reviews.once('drain', resolve));
+      }
     }
   }
 })();
-
-reviews.on('finished', () => {
-  reviews.end();
-  console.log('Finished generating data');
-});
-
-// ratings.end();
