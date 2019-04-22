@@ -170,10 +170,10 @@ ${endingBlurb[Math.floor(Math.random() * endingBlurb.length)]}`;
 // and just the overall feel of the property. We cannot wait to go back!`
 
 (async () => {
-  for (let i = 0; i < 10000000; i++) {
+  for (let i = 0; i < 100000000; i++) {
     let reviewObj = {
       id: i + 1,
-      propertyId: Math.floor(Math.random() * 1000000 + 1),
+      propertyId: Math.floor(Math.random() * 10000000 + 1),
       user: users[Math.floor(Math.random() * users.length)],
       date: `${months[Math.floor(Math.random() * months.length)]} ${
         years[Math.floor(Math.random() * years.length)]
