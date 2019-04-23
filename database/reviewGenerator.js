@@ -170,7 +170,7 @@ ${endingBlurb[Math.floor(Math.random() * endingBlurb.length)]}`;
 // and just the overall feel of the property. We cannot wait to go back!`
 
 (async () => {
-  for (let i = 0; i < 100000000; i++) {
+  for (let i = 0; i < 50000000; i++) {
     let reviewObj = {
       id: i + 1,
       propertyId: Math.floor(Math.random() * 10000000 + 1),
@@ -225,7 +225,7 @@ ${endingBlurb[Math.floor(Math.random() * endingBlurb.length)]}`;
         'id, propertyId, user, date, text, userImage, accuracyRating, communicationRating, cleanlinessRating, locationRating, checkInRating, valueRating, averageRating\n'
       );
       reviews.write(writeValue + '\n');
-    } else if (i === 9999999) {
+    } else if (i === 49999999) {
       if (!reviews.write(writeValue)) {
         await new Promise(resolve => reviews.once('drain', resolve));
       }
