@@ -1,4 +1,4 @@
-const dbHelpers = require('../database/MongoDB/dbHelpers');
+const dbHelpers = require('../database/PostgreSQL/dbHelpers');
 
 const controller = {
   postReview: (req, res) => {
@@ -17,6 +17,7 @@ const controller = {
   },
 
   deleteReview: (req, res) => {
+    console.log(req.params);
     const { id } = req.params;
     dbHelpers
       .deleteReview(id)

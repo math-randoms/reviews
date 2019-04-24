@@ -6,7 +6,7 @@ const dbHelpers = {
   },
 
   postReview: review => {
-    return Review.insertOne(review);
+    return Review.collection.insertOne(review);
   },
 
   deleteReview: id => {
@@ -14,11 +14,7 @@ const dbHelpers = {
   },
 
   updateReview: (review, id) => {
-    return Review.findByIdAndUpdate(
-      { _id: id },
-      { text: review.text },
-      { upsert: true }
-    );
+    return Review.findOneAndUpdate({ _id: id }, { text: review.text });
   },
 
   getReviewsByRating: (propertyId, averageRating) => {

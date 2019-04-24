@@ -1,44 +1,57 @@
-const pg = require('pg');
-const connectionString =
-  process.env.DATABASE_URL || 'postgres://localhost:5432/reviewsData';
+const client = require('./index.js');
 
-const client = new pg.Client(connectionString);
+client
+  .connect()
+  .then(() => {
+    console.log('PG connected');
+  })
+  .catch(err => console.error('PG connection error', err.stack));
 
 const dbHelpers = {
   getReview: propertyId => {
-    return client.query(
-      `select * from reviews where propertyId = ${propertyId}`
-    );
+    const getText = 'select * from reviews where propertyId = $1';
+    const getValues = [propertyId];
+    return client.query(getText, getValues);
   },
 
   postReview: review => {
-    return client.query(
-      `insert into reviews (propertyId, "user", date, text, userImage, accuracyRating, communicationRating, cleanlinessRating, locationRating, checkInRating, valueRating, averageRating) values (${
-        review.propertyId
-      }, ${review.user}, ${review.date}, ${review.text}, ${review.userImage}, ${
-        review.accuracyRating
-      }, ${review.communicationRating}, ${review.cleanlinessRating}, ${
-        review.locationRating
-      }, ${review.checkInRating}, ${review.valueRating}, ${
-        review.averageRating
-      })`
-    );
+    const postText =
+      'insert into reviews (id, propertyid, "user", date, text, userimage, accuracyrating, communicationrating, cleanlinessrating, locationrating, checkInrating, valuerating, averagerating) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)';
+    const postValues = [
+      review.id,
+      review.propertyId,
+      review.user,
+      review.date,
+      review.text,
+      review.userImage,
+      review.accuracyRating,
+      review.communicationRating,
+      review.cleanlinessRating,
+      review.locationRating,
+      review.checkInRating,
+      review.valueRating,
+      review.averageRating
+    ];
+    return client.query(postText, postValues);
   },
 
-  deleteReview: propertyId => {
-    return client.query(`delete from reviews where propertyId = ${propertyId}`);
+  deleteReview: id => {
+    const deleteText = 'delete from reviews where id = $1';
+    const deleteValues = [id];
+    return client.query(deleteText, deleteValues);
   },
 
   updateReview: (review, id) => {
-    return client.query(
-      `update reviews set text = ${review.text} where id = ${id}`
-    );
+    const updateText = 'update reviews set text = $1 where id = $2';
+    const updateValues = [review.text, id];
+    return client.query(updateText, updateValues);
   },
 
   getReviewsByRating: (propertyId, averageRating) => {
-    return client.query(
-      `select * from reviews where propertyId = ${propertyId} and averageRating = ${averageRating}`
-    );
+    const getByRatingText =
+      'select * from reviews where propertyId = $1 and averageRating = $2';
+    const getByRatingValues = [propertyId, averageRating];
+    return client.query(getByRatingText, getByRatingValues);
   }
 };
 

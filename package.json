@@ -7,7 +7,7 @@
     "build": "webpack -d --watch",
     "start": "nodemon server/server.js",
     "generateReviews": "node database/reviewGenerator.js",
-    "buildPGSchema": "node database/PostgreSQL/index.js",
+    "buildPGSchema": "node database/PostgreSQL/buildSchema.js",
     "test": "mocha test"
   },
   "repository": {
