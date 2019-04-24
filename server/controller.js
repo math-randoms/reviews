@@ -1,32 +1,45 @@
-const Model = require('../database/MongoDB/models.js');
+const dbHelpers = require('../database/postgreSQL/dbHelpers');
 
-module.exports = {
-  getRating: (req, res) => {
-    Model.Rating.countDocuments()
-      .then(count => {
-        let random = Math.random() * count;
-        return Model.Rating.findOne().skip(random);
-      })
-      .then(data => {
-        res.status(200).send(data);
-      });
+const controller = {
+  postReview: (req, res) => {
+    dbHelpers
+      .postReview(req.body)
+      .then(() => res.status(201).send())
+      .catch(err => res.status(400).send(err));
   },
 
-  postRating: (req, res) => {},
-
-  getReviewCount: (req, res) => {
-    Model.Review.countDocuments().then(count => {
-      res.status(200).send({ count });
-    });
+  getReviews: (req, res) => {
+    let { propertyId } = req.params;
+    dbHelpers
+      .getReview(propertyId)
+      .then(data => res.status(200).send(data))
+      .catch(err => res.status(400).send(err));
   },
 
-  getReviewPage: (req, res) => {
-    const page = req.params.page;
-    Model.Review.find()
-      .skip((page - 1) * 7)
-      .limit(7)
-      .then(data => {
-        res.status(200).send(data);
-      });
+  deleteReview: (req, res) => {
+    console.log(req.params);
+    const { id } = req.params;
+    dbHelpers
+      .deleteReview(id)
+      .then(() => res.status(202).send())
+      .catch(err => res.status(400).send(err));
+  },
+
+  updateReview: (req, res) => {
+    const { id } = req.params;
+    dbHelpers
+      .updateReview(req.body, id)
+      .then(() => res.status(202).send())
+      .catch(err => res.status(400).send(err));
+  },
+
+  getReviewsByRating: (req, res) => {
+    const { propertyId, averageRating } = req.params;
+    dbHelpers
+      .getReviewsByRating(propertyId, averageRating)
+      .then(data => res.status(200).send(data))
+      .catch(err => res.status(400).send(err));
   }
 };
+
+module.exports = controller;
