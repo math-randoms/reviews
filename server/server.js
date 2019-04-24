@@ -2,7 +2,7 @@ const express = require('express');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const path = require('path');
-const db = require('../database/postgreSQL/index.js');
+const db = require('../database/postgreSQL/index');
 const router = require('./router.js');
 
 const app = express();

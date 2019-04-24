@@ -1,4 +1,4 @@
-const dbHelpers = require('../database/PostgreSQL/dbHelpers');
+const dbHelpers = require('../database/postgreSQL/dbHelpers');
 
 const controller = {
   postReview: (req, res) => {
