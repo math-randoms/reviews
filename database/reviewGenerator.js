@@ -225,7 +225,7 @@ ${endingBlurb[Math.floor(Math.random() * endingBlurb.length)]}`;
 
     if (i === 0) {
       reviews.write(
-        'id, propertyId, user, date, text, userImage, accuracyRating, communicationRating, cleanlinessRating, locationRating, checkInRating, valueRating, averageRating\n'
+        'propertyId, user, date, text, userImage, accuracyRating, communicationRating, cleanlinessRating, locationRating, checkInRating, valueRating, averageRating\n'
       );
       reviews.write(writeValue + '\n');
     } else if (i === 49999999) {

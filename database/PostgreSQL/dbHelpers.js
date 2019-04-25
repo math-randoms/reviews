@@ -15,10 +15,8 @@ const dbHelpers = {
   },
 
   postReview: review => {
-    const postText =
-      'insert into reviews (id, propertyid, "user", date, text, userimage, accuracyrating, communicationrating, cleanlinessrating, locationrating, checkInrating, valuerating, averagerating) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)';
+    const postText = `insert into reviews (id, propertyid, "user", date, text, userimage, accuracyrating, communicationrating, cleanlinessrating, locationrating, checkInrating, valuerating, averagerating) values (nextval('reviews_sequence'), $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)`;
     const postValues = [
-      review.id,
       review.propertyId,
       review.user,
       review.date,
