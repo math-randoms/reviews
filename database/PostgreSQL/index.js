@@ -1,7 +1,13 @@
-const pg = require('pg');
-const connectionString =
-  process.env.DATABASE_URL || 'postgres://localhost:5432/reviewsData';
+const { Pool } = require('pg');
 
-const client = new pg.Client(connectionString);
+const pool = new Pool({
+  host: 'localhost',
+  port: '5432',
+  user: 'nmullins',
+  database: 'reviewsData',
+  idleTimeoutMillis: 30000,
+  connectionTimeoutMillis: 3000,
+  max: 30
+});
 
-module.exports = client;
+module.exports = pool;

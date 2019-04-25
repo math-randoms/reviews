@@ -1,6 +1,6 @@
-const client = require('./index');
+const pool = require('./index');
 
-client
+pool
   .connect()
   .then(() => {
     console.log('PG connected');
@@ -11,7 +11,7 @@ const dbHelpers = {
   getReview: propertyId => {
     const getText = 'select * from reviews where propertyId = $1';
     const getValues = [propertyId];
-    return client.query(getText, getValues);
+    return pool.query(getText, getValues);
   },
 
   postReview: review => {
@@ -32,26 +32,26 @@ const dbHelpers = {
       review.valueRating,
       review.averageRating
     ];
-    return client.query(postText, postValues);
+    return pool.query(postText, postValues);
   },
 
   deleteReview: id => {
     const deleteText = 'delete from reviews where id = $1';
     const deleteValues = [id];
-    return client.query(deleteText, deleteValues);
+    return pool.query(deleteText, deleteValues);
   },
 
   updateReview: (review, id) => {
     const updateText = 'update reviews set text = $1 where id = $2';
     const updateValues = [review.text, id];
-    return client.query(updateText, updateValues);
+    return pool.query(updateText, updateValues);
   },
 
   getReviewsByRating: (propertyId, averageRating) => {
     const getByRatingText =
       'select * from reviews where propertyId = $1 and averageRating = $2';
     const getByRatingValues = [propertyId, averageRating];
-    return client.query(getByRatingText, getByRatingValues);
+    return pool.query(getByRatingText, getByRatingValues);
   }
 };
 
