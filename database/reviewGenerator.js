@@ -173,7 +173,10 @@ ${endingBlurb[Math.floor(Math.random() * endingBlurb.length)]}`;
   for (let i = 0; i < 50000000; i++) {
     let reviewObj = {
       id: i + 1,
-      propertyId: Math.floor(Math.random() * 10000000 + 1),
+      propertyId:
+        i <= 45000000
+          ? Math.floor(Math.random() * 9000000 + 1)
+          : Math.floor(Math.random() * 1000000 + 1) + 9000000,
       user: users[Math.floor(Math.random() * users.length)],
       date: `${months[Math.floor(Math.random() * months.length)]} ${
         years[Math.floor(Math.random() * years.length)]
