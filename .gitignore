@@ -2,6 +2,7 @@ node_modules
 package-lock.json
 public/bundle.js
 database/reviews.csv
+newrelic.js
 
 ## MAC files ##
 .DS_Store

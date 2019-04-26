@@ -10,6 +10,7 @@ const controller = {
 
   getReviews: (req, res) => {
     let { propertyId } = req.params;
+    console.log('hit');
     dbHelpers
       .getReview(propertyId)
       .then(data => res.status(200).send(data))

@@ -1,15 +1,19 @@
 config:
   target: 'http://localhost:3004'
   phases:
-    - duration: 60
-      arrivalRate: 5
-    - duration: 120
-      arrivalRate: 5
-      rampTo: 50
+    # - duration: 60
+    #   arrivalRate: 10
+    # - duration: 120
+    #   arrivalRate: 10
+    #   rampTo: 25
+    # - duration: 1200
+    #   arrivalRate: 25
+    - duration: 600
+      arrivalRate: 100
 scenarios:
   - flow:
-      - loop:
-          - get:
-              url: '/api/reviews/{{ $randomNumber(9000000, 10000000) }}'
-          - get:
-              url: '/api/reviews/{{ $randomNumber(9000000, 10000000) }}/3'
+      # - loop:
+      - get:
+          url: '/api/reviews/{{ $randomNumber(9000000, 10000000) }}'
+      - get:
+          url: '/api/reviews/{{ $randomNumber(9000000, 10000000) }}/3'
