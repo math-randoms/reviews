@@ -1,73 +1,84 @@
 const url = require('url');
+const utils = require('./utilities.js');
 const dbHelpers = require('../database/PostgreSQL/dbHelpers.js');
 
-// const sendResponse = (res, data, statusCode, headers) => {
-//   res.writeHead(statusCode, headers).end(data);
-// };
-
-// const collectData = (req, callback) => {
-//   let data = '';
-//   req.on('data', chunk => {
-//     data += chunk;
-//   });
-//   req.on('end', () => {
-//     callback(data);
-//   });
-// };
-
-module.exports = (req, res) => {
-  let reqUrl = url.parse(req.url, true);
-  if (req.method === 'GET') {
-    let propertyId = reqUrl.query.propertyId;
-    let averageRating = reqUrl.query.averageRating;
+const actions = {
+  GET: (req, res) => {
+    const reqUrl = url.parse(req.url, true);
+    const { propertyId, averageRating } = reqUrl.query;
     if (propertyId && !averageRating) {
       dbHelpers
         .getReview(propertyId)
         .then(data => {
-          res.writeHead(200, { 'Content-Type': 'application/json' });
-          res.end(data);
+          utils.sendResponse(res, data, 200, {
+            'Content-Type': 'application/json'
+          });
         })
         .catch(err => {
-          res.writeHead(400, { 'Content-Type': 'application/json' });
-          res.end(err);
+          utils.sendResponse(err, 'Error', 404);
         });
     } else if (propertyId && averageRating) {
       dbHelpers
         .getReviewsByRating(propertyId, averageRating)
         .then(data => {
-          res.writeHead(200, { 'Content-Type': 'application/json' });
-          res.end(data);
+          utils.sendResponse(res, data, 200, {
+            'Content-Type': 'application/json'
+          });
         })
         .catch(err => {
-          res.writeHead(400, { 'Content-Type': 'application/json' });
-          res.end(err);
+          utils.sendResponse(err, `Error: ${err}`, 404);
         });
     }
+  },
+  POST: (req, res) => {
+    utils.collectData(req, formattedData => {
+      dbHelpers
+        .postReview(JSON.parse(formattedData))
+        .then(() =>
+          utils.sendResponse(res, 'Successfully created new record', 201, {
+            'Content-Type': 'application/json'
+          })
+        )
+        .catch(err => {
+          utils.sendResponse(res, `Error: ${err}`, 404);
+        });
+    });
+  },
+  DELETE: (req, res) => {
+    const reqUrl = url.parse(req.url, true);
+    const { id } = reqUrl.query;
+    dbHelpers
+      .deleteReview(id)
+      .then(() =>
+        utils.sendResponse(res, `Successfully deleted ID #${id}`, 202, {
+          'Content-Type': 'application/json'
+        })
+      )
+      .catch(err => utils.sendResponse(res, `Error: ${err}`, 404));
+  },
+  PUT: (req, res) => {
+    const reqUrl = url.parse(req.url, true);
+    const { id } = reqUrl.query;
+    utils.collectData(req, formattedData => {
+      dbHelpers
+        .updateReview(JSON.parse(formattedData), id)
+        .then(() =>
+          utils.sendResponse(res, `Successfully edited ID #${id}`, 202, {
+            'Content-Type': 'application/json'
+          })
+        )
+        .catch(err => {
+          utils.sendResponse(res, `Error: ${err}`, 404);
+        });
+    });
   }
-  // else if (req.method === 'POST') {
-  //   collectData(req, formattedData => {
-  //     dbHelpers
-  //       .postReview(formattedData)
-  //       .then(() =>
-  //         sendResponse(response, 'Success', 200, {
-  //           'Content-Type': 'application/json'
-  //         })
-  //       );
-  //   });
-  // }
 };
 
-// Routes
-
-// router.route('/reviews').post(controller.postReview);
-
-// router.route('/reviews/:propertyId').get(controller.getReviews);
-
-// router
-//   .route('/reviews/:id')
-//   .delete(controller.deleteReview)
-//   .put(controller.updateReview);
-
-// router
-//   .route('/reviews/:propertyId/:averageRating')
-//   .get(controller.getReviewsByRating);
+module.exports = (req, res) => {
+  let action = actions[req.method];
+  if (action) {
+    action(req, res);
+  } else {
+    utils.sendResponse(res, 'Not found', 404);
+  }
+};
