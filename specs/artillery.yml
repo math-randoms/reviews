@@ -14,6 +14,6 @@ scenarios:
   - flow:
       # - loop:
       - get:
-          url: '/api/reviews/{{ $randomNumber(9000000, 10000000) }}'
+          url: '/api/reviews/?propertyId={{ $randomNumber(9000000, 10000000) }}'
       - get:
-          url: '/api/reviews/{{ $randomNumber(9000000, 10000000) }}/3'
+          url: '/api/reviews/?propertyId={{ $randomNumber(9000000, 10000000) }}&averageRating=3'

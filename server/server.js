@@ -3,7 +3,6 @@ const http = require('http');
 const url = require('url');
 const handler = require('./handler.js');
 const utils = require('./utilities.js');
-const db = require('../database/PostgreSQL/index.js');
 
 const port = 3004;
 
