@@ -1,8 +1,9 @@
 require('newrelic');
 const http = require('http');
 const url = require('url');
+const path = require('path');
+const fs = require('fs');
 const handler = require('./handler.js');
-const utils = require('./utilities.js');
 
 const port = 3004;
 
@@ -11,7 +12,52 @@ const server = http.createServer((req, res) => {
   if (parts.pathname === '/api/reviews/') {
     handler(req, res);
   } else {
-    utils.sendResponse(res, 'Not found', 404);
+    if (req.url === '/') {
+      fs.readFile(
+        path.join(__dirname, '../public/index.html'),
+        (err, content) => {
+          if (err) {
+            res.writeHead(500);
+            res.end();
+          } else {
+            res.writeHead(200, { 'Content-Type': 'text/html' });
+            res.end(content, 'utf-8');
+          }
+        }
+      );
+    } else if (req.url === '/bundle.js') {
+      fs.readFile(
+        path.join(__dirname, '../public/bundle.js'),
+        (err, content) => {
+          if (err) {
+            res.writeHead(500);
+            res.end();
+          } else {
+            res.writeHead(200, { 'Content-Type': 'text/js' });
+            res.end(content, 'utf-8');
+          }
+        }
+      );
+    } else if (
+      parts.pathname.includes('loaderio-ab3006535e5d6aeb9d63ed5914bd6343.txt')
+    ) {
+      fs.readFile(
+        path.join(
+          __dirname,
+          '../loaderio-ab3006535e5d6aeb9d63ed5914bd6343.txt'
+        ),
+        (err, data) => {
+          if (err) {
+            res.writeHead(404);
+            res.write('Not Found!', err);
+          } else {
+            res.writeHead(200, { 'Content-Type': 'text/plain' });
+            res.write(data);
+          }
+          res.end();
+        }
+      );
+    }
   }
 });
 
