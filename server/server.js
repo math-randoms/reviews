@@ -39,12 +39,12 @@ const server = http.createServer((req, res) => {
         }
       );
     } else if (
-      parts.pathname.includes('loaderio-e5a19bf5bf94f13b2a0fe76f928b319d.txt')
+      parts.pathname.includes('loaderio-b0f06537aae691c283d13b92cb75fc5b.txt')
     ) {
       fs.readFile(
         path.join(
           __dirname,
-          '../loaderio-e5a19bf5bf94f13b2a0fe76f928b319d.txt'
+          '../loaderio-b0f06537aae691c283d13b92cb75fc5b.txt'
         ),
         (err, data) => {
           if (err) {
