@@ -1,0 +1,10 @@
+app:
+  build: ./
+  volumes:
+    - ./:/var/www/reviews
+  ports:
+    - 3004:3004
+  environment:
+    - NODE_ENV=development
+    - PORT=3004
+  command: sh -c 'npm i && npm start'

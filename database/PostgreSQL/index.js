@@ -5,10 +5,7 @@ const pool = new Pool({
   port: '5432',
   user: 'postgres',
   password: 'docker',
-  database: 'reviewsdata',
-  idleTimeoutMillis: 30000,
-  connectionTimeoutMillis: 3000,
-  max: 30
+  database: 'reviewsdata'
 });
 
 module.exports = pool;

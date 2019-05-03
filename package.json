@@ -47,6 +47,7 @@
     "react": "^16.8.5",
     "react-dom": "^16.8.5",
     "react-paginate": "^6.3.0",
+    "redis": "^2.8.0",
     "style-loader": "^0.23.1"
   }
 }
