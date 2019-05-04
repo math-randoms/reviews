@@ -6,7 +6,7 @@ const dbHelpers = require('../database/PostgreSQL/dbHelpers.js');
 
 const redis = require('redis');
 
-const client = redis.createClient();
+const client = redis.createClient(6379, 'redis');
 
 client.on('connect', function() {
   console.log('Redis client connected');
