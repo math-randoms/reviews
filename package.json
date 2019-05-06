@@ -8,13 +8,14 @@
     "start": "nodemon server/server.js",
     "generateReviews": "node database/reviewGenerator.js",
     "buildPGSchema": "node database/PostgreSQL/buildSchema.js",
+    "artillery": "artillery run specs/artillery.yml",
     "test": "mocha test"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/sharebnbhr/reviews.git"
   },
-  "author": "calyao",
+  "author": "n-mullins",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/sharebnbhr/reviews/issues"
@@ -24,8 +25,10 @@
     "@babel/core": "^7.4.0",
     "@babel/preset-env": "^7.4.2",
     "@babel/preset-react": "^7.0.0",
+    "artillery": "^1.6.0-27",
     "babel-loader": "^8.0.5",
     "ndjson": "^1.5.0",
+    "newrelic": "^5.7.0",
     "through2": "^3.0.1",
     "webpack": "^4.29.6",
     "webpack-cli": "^3.3.0"
@@ -44,6 +47,8 @@
     "react": "^16.8.5",
     "react-dom": "^16.8.5",
     "react-paginate": "^6.3.0",
+    "redis": "^2.8.0",
+    "redis-server": "^1.2.2",
     "style-loader": "^0.23.1"
   }
 }
